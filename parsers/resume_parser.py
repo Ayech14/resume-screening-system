@@ -20,6 +20,15 @@ def _extract_docx(self, file_path: Path) -> str:
     return "\n".join(
         para.text for para in doc.paragraphs).strip()
 
+def parse(self, file_path: Path) -> str:
+    suffix = file_path.suffix.lower()
+    if suffix == ".pdf":
+        return self._extract_pdf(file_path)
+    elif suffix == ".docx":
+        return self._extract_docx(file_path)
+    else:
+        raise ValueError(f"Unsupported file type: {suffix}")
+
 
         
             
