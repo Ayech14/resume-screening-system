@@ -1,0 +1,25 @@
+{
+    "programming_languages": {
+        "python": ["python", "python3"],
+        "java": ["java"],
+        "javascript": ["javascript", "js"],
+        "c": ["c"],
+        "c++": ["c++", "cpp"]
+    },
+    "web_technologies": {
+        "html": ["html", "html5"],
+        "css": ["css", "css3"],
+        "react": ["react", "reactjs"],
+        "nodejs": ["node", "node.js", "nodejs"]
+    },
+    "tools": {
+        "git": ["git"],
+        "docker": ["docker"],
+        "github": ["github"]
+    },
+    "databases": {
+        "sql": ["sql"],
+        "mysql": ["mysql"],
+        "postgresql": ["postgresql", "postgres"]
+    }
+}
