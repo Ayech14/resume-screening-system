@@ -31,6 +31,16 @@ class JDParser:
 
         return "\n".join(section_lines)
 
+    def _extract_years(self, experience_text: str) -> float:
+        import re
+
+        match = re.search(r"(\d+(?:\.\d+)?)\+?\s+years?", experience_text.lower())
+
+        if match:
+            return float(match.group(1))
+
+        return 0.0
+
     def parse(self, job_description: str) -> dict:
         required_section = self._extract_section(
             job_description,
@@ -42,6 +52,11 @@ class JDParser:
             "Preferred Skills"
         )
 
+        experience_section = self._extract_section(
+            job_description,
+            "Experience"
+        )
+
         required_skills = self.keyword_extractor.extract_skills(
             required_section
         )
@@ -50,7 +65,10 @@ class JDParser:
             preferred_section
         )
 
+        required_years = self._extract_years(experience_section)
+
         return {
             "required_skills": required_skills,
-            "preferred_skills": preferred_skills
+            "preferred_skills": preferred_skills,
+            "required_years": required_years
         }
