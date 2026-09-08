@@ -3,6 +3,7 @@ import tempfile
 from pathlib import Path
 
 from parsers.resume_parser import ResumeParser
+from extractors.keyword_extractor import KeywordExtractor
 
 st.title("Resume Screening System")
 
@@ -25,6 +26,7 @@ if st.button("Screen Resumes"):
         st.error("Please upload at least one resume.")
     else:
         parser = ResumeParser()
+        extractor = KeywordExtractor("data/skills_taxonomy.json")
 
         for uploaded_file in uploaded_files:
             with tempfile.NamedTemporaryFile(
@@ -38,4 +40,7 @@ if st.button("Screen Resumes"):
 
             resume_text = parser.parse(file_path)
 
+            resume_skills = extractor.extract_skills(resume_text)
+
             st.write(resume_text)
+            st.write("Detected skills:", resume_skills)
