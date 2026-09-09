@@ -66,9 +66,12 @@ class JDParser:
         )
 
         required_years = self._extract_years(experience_section)
+        
+        target_keywords = self.keyword_extractor.extract_keywords(job_description)
 
         return {
             "required_skills": required_skills,
             "preferred_skills": preferred_skills,
-            "required_years": required_years
+            "required_years": required_years,
+            "target_keywords": target_keywords
         }
