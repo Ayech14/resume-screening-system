@@ -4,6 +4,7 @@ from pathlib import Path
 
 from parsers.resume_parser import ResumeParser
 from extractors.keyword_extractor import KeywordExtractor
+from matcher.scorer import Scorer
 
 st.title("Resume Screening System")
 
@@ -42,5 +43,11 @@ if st.button("Screen Resumes"):
 
             resume_skills = extractor.extract_skills(resume_text)
 
+            resume_keywords = extractor.extract_keywords(resume_text)
+
+            candidate_years = extractor.extract_experience_years(resume_text)
+
             st.write(resume_text)
             st.write("Detected skills:", resume_skills)
+            st.write("Detected keywords:", resume_keywords)
+            st.write("Candidate experience:", candidate_years)
