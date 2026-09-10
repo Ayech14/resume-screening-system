@@ -34,6 +34,7 @@ if st.button("Screen Resumes"):
 
         jd_data = jd_parser.parse(job_description)
 
+        results = []
 
         for uploaded_file in uploaded_files:
             with tempfile.NamedTemporaryFile(
@@ -59,14 +60,15 @@ if st.button("Screen Resumes"):
             target_keywords = jd_data["target_keywords"]
 
             score = scorer.score_candidate(
-            resume_skills,
-            required_skills,
-            preferred_skills,
-            candidate_years,
-            required_years,
-            resume_keywords,
-            target_keywords
+                resume_skills,
+                required_skills,
+                preferred_skills,
+                candidate_years,
+                required_years,
+                resume_keywords,
+                target_keywords
         )
+            
 
             matched_required = resume_skills & required_skills
             missing_required = required_skills - resume_skills
@@ -74,6 +76,16 @@ if st.button("Screen Resumes"):
             missing_preferred = preferred_skills - resume_skills
             experience_gap = max(required_years - candidate_years, 0)
 
+            results.append({
+                "filename": uploaded_file.name,
+                "score": score,
+                "experience": candidate_years,
+                "matched_required": matched_required,
+                "missing_required": missing_required,
+                "matched_preferred": matched_preferred,
+                "missing_preferred": missing_preferred,
+                "experience_gap": experience_gap,
+            })
             st.write(resume_text)
             st.write("Detected skills:", resume_skills)
             st.write("Detected keywords:", resume_keywords)
@@ -85,3 +97,26 @@ if st.button("Screen Resumes"):
             st.write("Missing preferred skills:", missing_preferred)
             st.write("Required experience:", required_years, "years")
             st.write("Experience gap:", round(experience_gap, 1), "years")
+            
+        results.sort(key=lambda candidate: candidate["score"], reverse=True)
+        st.subheader("Candidate Rankings")
+
+        for rank, candidate in enumerate(results, start=1):
+            st.markdown(f"### {rank}. {candidate['filename']}")
+            st.write(f"**Match Score:** {candidate['score']}%")
+            st.write(f"**Experience:** {candidate['experience']} years")
+
+            st.write("**Matched Required Skills:**", candidate["matched_required"])
+            st.write("**Missing Required Skills:**", candidate["missing_required"])
+
+            st.write("**Matched Preferred Skills:**", candidate["matched_preferred"])
+            st.write("**Missing Preferred Skills:**", candidate["missing_preferred"])
+
+            st.write(
+                "**Experience Gap:**",
+                round(candidate["experience_gap"], 1),
+                "years"
+            )
+
+            st.divider()
+            
