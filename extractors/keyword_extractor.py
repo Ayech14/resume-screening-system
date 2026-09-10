@@ -1,7 +1,7 @@
 import json
 from typing import Set
 import re
-
+from datetime import datetime
 
 class KeywordExtractor:
 
@@ -24,7 +24,7 @@ class KeywordExtractor:
 
         return found_skills
 
-    def extract_experience_years(self, text: str) -> int:
+    def extract_experience_years(self, text: str) -> float:
         text_lower = text.lower()
 
         patterns = [
@@ -37,15 +37,43 @@ class KeywordExtractor:
         years = []
 
         for pattern in patterns:
-            matches = re.finditer(pattern, text_lower)
-
-            for match in matches:
-                year = int(match.group(1))
+            for match in re.finditer(pattern, text_lower):
+                year = float(match.group(1))
 
                 if 0 < year < 50:
                     years.append(year)
 
-        return max(years) if years else 0
+        date_pattern = (
+            r"(january|february|march|april|may|june|july|august|"
+            r"september|october|november|december)\s+(\d{4})"
+            r"\s*[-–]\s*"
+            r"(present|(january|february|march|april|may|june|july|"
+            r"august|september|october|november|december)\s+\d{4})"
+        )
+
+        for match in re.finditer(date_pattern, text_lower):
+            start_month = match.group(1)
+            start_year = int(match.group(2))
+            end_text = match.group(3)
+
+            start_date = datetime.strptime(
+                f"{start_month} {start_year}", "%B %Y"
+            )
+
+            if end_text == "present":
+                end_date = datetime.now()
+            else:
+                end_date = datetime.strptime(end_text, "%B %Y")
+
+            months = (
+                (end_date.year - start_date.year) * 12
+                + (end_date.month - start_date.month)
+            )
+
+            if months > 0:
+                years.append(months / 12)
+
+        return round(max(years), 1) if years else 0.0
 
     def extract_keywords(self, text: str) -> Set[str]:
         found_keywords = set()

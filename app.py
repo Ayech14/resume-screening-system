@@ -5,6 +5,7 @@ from pathlib import Path
 from parsers.resume_parser import ResumeParser
 from extractors.keyword_extractor import KeywordExtractor
 from matcher.scorer import Scorer
+from parsers.jd_parser import JDParser
 
 st.title("Resume Screening System")
 
@@ -28,6 +29,11 @@ if st.button("Screen Resumes"):
     else:
         parser = ResumeParser()
         extractor = KeywordExtractor("data/skills_taxonomy.json")
+        jd_parser = JDParser("data/skills_taxonomy.json")
+        scorer = Scorer()
+
+        jd_data = jd_parser.parse(job_description)
+
 
         for uploaded_file in uploaded_files:
             with tempfile.NamedTemporaryFile(
@@ -47,7 +53,23 @@ if st.button("Screen Resumes"):
 
             candidate_years = extractor.extract_experience_years(resume_text)
 
+            required_skills = jd_data["required_skills"]
+            preferred_skills = jd_data["preferred_skills"]
+            required_years = jd_data["required_years"]
+            target_keywords = jd_data["target_keywords"]
+
+            score = scorer.score_candidate(
+            resume_skills,
+            required_skills,
+            preferred_skills,
+            candidate_years,
+            required_years,
+            resume_keywords,
+            target_keywords
+        )
+
             st.write(resume_text)
             st.write("Detected skills:", resume_skills)
             st.write("Detected keywords:", resume_keywords)
             st.write("Candidate experience:", candidate_years)
+            st.write("Score:", score)
