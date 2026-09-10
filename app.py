@@ -68,8 +68,20 @@ if st.button("Screen Resumes"):
             target_keywords
         )
 
+            matched_required = resume_skills & required_skills
+            missing_required = required_skills - resume_skills
+            matched_preferred = resume_skills & preferred_skills
+            missing_preferred = preferred_skills - resume_skills
+            experience_gap = max(required_years - candidate_years, 0)
+
             st.write(resume_text)
             st.write("Detected skills:", resume_skills)
             st.write("Detected keywords:", resume_keywords)
             st.write("Candidate experience:", candidate_years)
-            st.write("Score:", score)
+            st.subheader(f"Match Score: {score}%")
+            st.write("Matched required skills:", matched_required)
+            st.write("Missing required skills:", missing_required)
+            st.write("Matched preferred skills:", matched_preferred)
+            st.write("Missing preferred skills:", missing_preferred)
+            st.write("Required experience:", required_years, "years")
+            st.write("Experience gap:", round(experience_gap, 1), "years")
