@@ -10,12 +10,15 @@
         "html": ["html", "html5"],
         "css": ["css", "css3"],
         "react": ["react", "reactjs"],
-        "nodejs": ["node", "node.js", "nodejs"]
+        "nodejs": ["node", "node.js", "nodejs"],
+        "django": ["django"],
+        "rest_apis": ["rest api", "rest apis", "restful api", "restful apis"]
     },
     "tools": {
         "git": ["git"],
         "docker": ["docker"],
-        "github": ["github"]
+        "github": ["github"],
+        "aws": ["aws", "amazon web services"]
     },
     "databases": {
         "sql": ["sql"],
