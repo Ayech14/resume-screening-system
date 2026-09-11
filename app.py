@@ -102,21 +102,58 @@ if st.button("Screen Resumes"):
         st.subheader("Candidate Rankings")
 
         for rank, candidate in enumerate(results, start=1):
-            st.markdown(f"### {rank}. {candidate['filename']}")
-            st.write(f"**Match Score:** {candidate['score']}%")
-            st.write(f"**Experience:** {candidate['experience']} years")
 
-            st.write("**Matched Required Skills:**", candidate["matched_required"])
-            st.write("**Missing Required Skills:**", candidate["missing_required"])
-
-            st.write("**Matched Preferred Skills:**", candidate["matched_preferred"])
-            st.write("**Missing Preferred Skills:**", candidate["missing_preferred"])
-
-            st.write(
-                "**Experience Gap:**",
-                round(candidate["experience_gap"], 1),
-                "years"
+            required_matched = len(candidate["matched_required"])
+            required_total = (
+                required_matched + len(candidate["missing_required"])
             )
 
-            st.divider()
+            with st.expander(
+                f"{rank}. {candidate['filename']} — {candidate['score']}%"
+            ):
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
+                    st.metric(
+                        "Match Score",
+                        f"{candidate['score']}%"
+                    )
+
+                with col2:
+                    st.metric(
+                        "Experience",
+                        f"{candidate['experience']} years"
+                    )
+
+                with col3:
+                    st.metric(
+                        "Required Skills",
+                        f"{required_matched}/{required_total}"
+                    )
+
+                st.write(
+                    "**Matched Required Skills:**",
+                    candidate["matched_required"]
+                )
+
+                st.write(
+                    "**Missing Required Skills:**",
+                    candidate["missing_required"]
+                )
+
+                st.write(
+                    "**Matched Preferred Skills:**",
+                    candidate["matched_preferred"]
+                )
+
+                st.write(
+                    "**Missing Preferred Skills:**",
+                    candidate["missing_preferred"]
+                )
+
+                st.write(
+                    "**Experience Gap:**",
+                    round(candidate["experience_gap"], 1),
+                    "years"
+                )
             
