@@ -90,4 +90,32 @@ class KeywordExtractor:
 
         return found_keywords
 
+    def extract_email(self, text: str) -> str:
+        pattern = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+
+        match = re.search(pattern, text)
+
+        return match.group(0) if match else ""
+
+
+    def extract_phone(self, text: str) -> str:
+        pattern = (
+            r"(?:\+?1[-.\s]?)?"
+            r"(?:\(?\d{3}\)?[-.\s]?)"
+            r"\d{3}[-.\s]?\d{4}"
+        )
+
+        match = re.search(pattern, text)
+
+        return match.group(0) if match else ""
+
+    ### this method doesn't work correctly for all resumes currently
+    def extract_name(self, text: str) -> str:
+        lines = [line.strip() for line in text.splitlines() if line.strip()]
+
+        if lines:
+            return lines[0]
+
+        return ""
+
     
