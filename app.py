@@ -54,6 +54,10 @@ if st.button("Screen Resumes"):
 
             candidate_years = extractor.extract_experience_years(resume_text)
 
+            candidate_name = extractor.extract_name(resume_text)
+            candidate_email = extractor.extract_email(resume_text)
+            candidate_phone = extractor.extract_phone(resume_text)
+
             required_skills = jd_data["required_skills"]
             preferred_skills = jd_data["preferred_skills"]
             required_years = jd_data["required_years"]
@@ -78,6 +82,9 @@ if st.button("Screen Resumes"):
 
             results.append({
                 "filename": uploaded_file.name,
+                "name": candidate_name,
+                "email": candidate_email,
+                "phone": candidate_phone,
                 "score": score,
                 "experience": candidate_years,
                 "matched_required": matched_required,
@@ -111,6 +118,9 @@ if st.button("Screen Resumes"):
             with st.expander(
                 f"{rank}. {candidate['filename']} — {candidate['score']}%"
             ):
+                st.write(f"**Candidate:** {candidate['name']}")
+                st.write(f"**Email:** {candidate['email']}")
+                st.write(f"**Phone:** {candidate['phone']}")
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
