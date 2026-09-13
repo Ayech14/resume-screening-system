@@ -1,11 +1,13 @@
 import streamlit as st
 import tempfile
+import csv
 from pathlib import Path
 
 from parsers.resume_parser import ResumeParser
 from extractors.keyword_extractor import KeywordExtractor
 from matcher.scorer import Scorer
 from parsers.jd_parser import JDParser
+from io import StringIO
 
 st.title("Resume Screening System")
 
@@ -166,4 +168,48 @@ if st.button("Screen Resumes"):
                     round(candidate["experience_gap"], 1),
                     "years"
                 )
+                csv_buffer = StringIO()
+
+        writer = csv.writer(csv_buffer)
+
+        writer.writerow([
+            "Rank",
+            "Candidate",
+            "Email",
+            "Phone",
+            "Score",
+            "Experience",
+            "Required Skills Matched",
+            "Missing Required Skills",
+            "Matched Preferred Skills",
+            "Missing Preferred Skills",
+            "Experience Gap"
+        ])
+
+        for rank, candidate in enumerate(results, start=1):
+            required_matched = len(candidate["matched_required"])
+            required_total = (
+                required_matched + len(candidate["missing_required"])
+            )
+
+            writer.writerow([
+                rank,
+                candidate["name"],
+                candidate["email"],
+                candidate["phone"],
+                candidate["score"],
+                candidate["experience"],
+                f"{required_matched}/{required_total}",
+                ", ".join(sorted(candidate["missing_required"])),
+                ", ".join(sorted(candidate["matched_preferred"])),
+                ", ".join(sorted(candidate["missing_preferred"])),
+                round(candidate["experience_gap"], 1)
+            ])
+
+        st.download_button(
+            label="Download Results as CSV",
+            data=csv_buffer.getvalue(),
+            file_name="resume_screening_results.csv",
+            mime="text/csv"
+        )
             
