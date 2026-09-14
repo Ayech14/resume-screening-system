@@ -108,6 +108,42 @@ if st.button("Screen Resumes"):
             st.write("Experience gap:", round(experience_gap, 1), "years")
             
         results.sort(key=lambda candidate: candidate["score"], reverse=True)
+
+        st.subheader("Screening Summary")
+
+        total_candidates = len(results)
+        average_score = sum(
+            candidate["score"] for candidate in results
+        ) / total_candidates
+
+        top_candidate = results[0]
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric(
+                "Candidates Screened",
+                total_candidates
+            )
+
+        with col2:
+            st.metric(
+                "Average Match Score",
+                f"{average_score:.2f}%"
+            )
+
+        with col3:
+            st.metric(
+                "Top Candidate",
+                f"{top_candidate['score']}%"
+            )
+
+        st.write(
+            f"**Top Candidate:** {top_candidate['name']}"
+        )
+
+        st.divider()
+
         st.subheader("Candidate Rankings")
 
         for rank, candidate in enumerate(results, start=1):
