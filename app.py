@@ -81,6 +81,14 @@ if st.button("Screen Resumes"):
             matched_preferred = resume_skills & preferred_skills
             missing_preferred = preferred_skills - resume_skills
             experience_gap = max(required_years - candidate_years, 0)
+            if score >= 80:
+                recommendation = "Strong Match"
+            elif score >= 60:
+                recommendation = "Good Match"
+            elif score >= 40:
+                recommendation = "Partial Match"
+            else:
+                recommendation = "Weak Match"
 
             results.append({
                 "filename": uploaded_file.name,
@@ -88,6 +96,7 @@ if st.button("Screen Resumes"):
                 "email": candidate_email,
                 "phone": candidate_phone,
                 "score": score,
+                "recommendation": recommendation,
                 "experience": candidate_years,
                 "matched_required": matched_required,
                 "missing_required": missing_required,
@@ -159,6 +168,9 @@ if st.button("Screen Resumes"):
                 st.write(f"**Candidate:** {candidate['name']}")
                 st.write(f"**Email:** {candidate['email']}")
                 st.write(f"**Phone:** {candidate['phone']}")
+                st.write(
+                    f"**Recommendation:** {candidate['recommendation']}"
+                )
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
