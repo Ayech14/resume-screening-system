@@ -9,6 +9,61 @@ from matcher.scorer import Scorer
 from parsers.jd_parser import JDParser
 from io import StringIO
 
+def display_skill_tags(skills):
+    if not skills:
+        st.caption("None")
+        return
+
+    display_names = {
+        "rest_apis": "REST APIs",
+        "node_js": "Node.js",
+        "postgresql": "PostgreSQL",
+        "javascript": "JavaScript",
+        "github": "GitHub",
+        "aws": "AWS",
+        "html": "HTML",
+        "css": "CSS",
+        "sql": "SQL",
+        "python": "Python",
+        "java": "Java",
+        "docker": "Docker",
+    }
+
+    tags = "".join(
+        f"""
+        <span style="
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background-color: #1f2430;
+            border: 1px solid #3a4152;
+            color: #e6e6eb;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        ">
+            {display_names.get(skill.lower(), skill.replace("_", " ").title())}
+        </span>
+        """
+        for skill in sorted(skills)
+    )
+
+    st.markdown(
+        f"""
+        <div style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            margin-bottom: 14px;
+        ">
+            {tags}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 st.title("Resume Screening System")
 
 job_description = st.text_area(
@@ -104,17 +159,7 @@ if st.button("Screen Resumes"):
                 "missing_preferred": missing_preferred,
                 "experience_gap": experience_gap,
             })
-            st.write(resume_text)
-            st.write("Detected skills:", resume_skills)
-            st.write("Detected keywords:", resume_keywords)
-            st.write("Candidate experience:", candidate_years)
-            st.subheader(f"Match Score: {score}%")
-            st.write("Matched required skills:", matched_required)
-            st.write("Missing required skills:", missing_required)
-            st.write("Matched preferred skills:", matched_preferred)
-            st.write("Missing preferred skills:", missing_preferred)
-            st.write("Required experience:", required_years, "years")
-            st.write("Experience gap:", round(experience_gap, 1), "years")
+            
             
         results.sort(key=lambda candidate: candidate["score"], reverse=True)
 
@@ -191,31 +236,62 @@ if st.button("Screen Resumes"):
                         f"{required_matched}/{required_total}"
                     )
 
-                st.write(
-                    "**Matched Required Skills:**",
-                    candidate["matched_required"]
-                )
+                st.write("**Matched Required Skills**")
+                display_skill_tags(candidate["matched_required"])
 
-                st.write(
-                    "**Missing Required Skills:**",
-                    candidate["missing_required"]
-                )
+                st.write("**Missing Required Skills**")
+                display_skill_tags(candidate["missing_required"])
 
-                st.write(
-                    "**Matched Preferred Skills:**",
-                    candidate["matched_preferred"]
-                )
+                st.write("**Matched Preferred Skills**")
+                display_skill_tags(candidate["matched_preferred"])
 
-                st.write(
-                    "**Missing Preferred Skills:**",
-                    candidate["missing_preferred"]
-                )
+                st.write("**Missing Preferred Skills**")
+                display_skill_tags(candidate["missing_preferred"])
 
-                st.write(
-                    "**Experience Gap:**",
-                    round(candidate["experience_gap"], 1),
-                    "years"
-                )
+                experience_gap = round(candidate["experience_gap"], 1)
+
+                st.write("**Experience Requirement**")
+
+                if experience_gap == 0:
+                    st.markdown(
+                        """
+                        <span style="
+                            display: inline-flex;
+                            align-items: center;
+                            padding: 6px 12px;
+                            border-radius: 999px;
+                            background-color: #16251f;
+                            border: 1px solid #2f6b55;
+                            color: #3cffb3;
+                            font-size: 14px;
+                            font-weight: 500;
+                            white-space: nowrap;
+                        ">
+                            ✓ Meets required experience
+                        </span>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        f"""
+                        <span style="
+                            display: inline-flex;
+                            align-items: center;
+                            padding: 6px 12px;
+                            border-radius: 999px;
+                            background-color: #1f2430;
+                            border: 1px solid #3a4152;
+                            color: #e6e6eb;
+                            font-size: 14px;
+                            font-weight: 500;
+                            white-space: nowrap;
+                        ">
+                            {experience_gap} years below requirement
+                        </span>
+                        """,
+                        unsafe_allow_html=True
+                    )
                 csv_buffer = StringIO()
 
         writer = csv.writer(csv_buffer)
