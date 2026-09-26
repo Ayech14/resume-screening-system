@@ -77,17 +77,73 @@ uploaded_files = st.file_uploader(
     type=["pdf", "docx"],
     accept_multiple_files=True
 )
+st.subheader("Scoring Configuration")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    required_weight = st.slider(
+        "Required Skills",
+        min_value=0,
+        max_value=100,
+        value=50,
+        step=5
+    )
+
+    experience_weight = st.slider(
+        "Experience",
+        min_value=0,
+        max_value=100,
+        value=15,
+        step=5
+    )
+
+with col2:
+    preferred_weight = st.slider(
+        "Preferred Skills",
+        min_value=0,
+        max_value=100,
+        value=25,
+        step=5
+    )
+
+    keyword_weight = st.slider(
+        "Keywords",
+        min_value=0,
+        max_value=100,
+        value=10,
+        step=5
+    )
+
+total_weight = (
+    required_weight
+    + preferred_weight
+    + experience_weight
+    + keyword_weight
+)
+
+st.write(f"**Total Weight: {total_weight}%**")
+
+if total_weight != 100:
+    st.warning("Scoring weights must total exactly 100%.")
 
 if st.button("Screen Resumes"):
     if not job_description:
         st.error("Please enter a job description.")
     elif not uploaded_files:
         st.error("Please upload at least one resume.")
+    elif total_weight != 100:
+        st.error("Scoring weights must total exactly 100%.")
     else:
         parser = ResumeParser()
         extractor = KeywordExtractor("data/skills_taxonomy.json")
         jd_parser = JDParser("data/skills_taxonomy.json")
-        scorer = Scorer()
+        scorer = Scorer(
+        required_weight=required_weight / 100,
+        preferred_weight=preferred_weight / 100,
+        experience_weight=experience_weight / 100,
+        keyword_weight=keyword_weight / 100
+        )
 
         jd_data = jd_parser.parse(job_description)
 

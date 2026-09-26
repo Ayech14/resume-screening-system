@@ -1,5 +1,17 @@
 class Scorer:
 
+    def __init__(
+        self,
+        required_weight: float = 0.50,
+        preferred_weight: float = 0.25,
+        experience_weight: float = 0.15,
+        keyword_weight: float = 0.10
+    ):
+        self.required_weight = required_weight
+        self.preferred_weight = preferred_weight
+        self.experience_weight = experience_weight
+        self.keyword_weight = keyword_weight
+
     def calculate_score(
         self,
         required_skills_score: float,
@@ -9,10 +21,10 @@ class Scorer:
     ) -> float:
 
         total_score = (
-            required_skills_score * 0.50
-            + preferred_skills_score * 0.25
-            + experience_score * 0.15
-            + keyword_score * 0.10
+            required_skills_score * self.required_weight
+            + preferred_skills_score * self.preferred_weight
+            + experience_score * self.experience_weight
+            + keyword_score * self.keyword_weight
         )
 
         return round(total_score * 100, 2)
@@ -30,8 +42,6 @@ class Scorer:
 
         return len(matched_skills) / len(target_skills)
 
-
-    
     def calculate_skills_score(
         self,
         resume_skills: set[str],
@@ -50,10 +60,9 @@ class Scorer:
         )
 
         return (
-            required_score * 0.50
-            + preferred_score * 0.25
+            required_score * self.required_weight
+            + preferred_score * self.preferred_weight
         )
-
 
     def calculate_experience_score(
         self,
@@ -78,7 +87,6 @@ class Scorer:
         matched_keywords = resume_keywords & target_keywords
 
         return len(matched_keywords) / len(target_keywords)
-
 
     def score_candidate(
         self,
