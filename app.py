@@ -79,10 +79,13 @@ job_description = st.text_area(
     label_visibility="collapsed"
 )
 
+st.subheader("Candidate Resumes")
+
 uploaded_files = st.file_uploader(
-    "Upload Resumes",
+    "Upload one or more resumes",
     type=["pdf", "docx"],
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    help="Supported formats: PDF and DOCX"
 )
 st.subheader("Scoring Configuration")
 
