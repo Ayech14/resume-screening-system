@@ -66,10 +66,17 @@ def display_skill_tags(skills):
 
 st.title("Resume Screening System")
 
+st.caption(
+    "Screen and rank candidates based on skills, experience, and job-specific requirements."
+)
+
+st.subheader("Job Description")
+
 job_description = st.text_area(
-    "Job Description",
-    placeholder="Paste the job description here..."
-    
+    "Paste the job description below",
+    placeholder="Paste the job description here...",
+    height=200,
+    label_visibility="collapsed"
 )
 
 uploaded_files = st.file_uploader(
