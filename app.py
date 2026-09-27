@@ -141,7 +141,11 @@ st.write(f"**Total Weight: {total_weight}%**")
 if total_weight != 100:
     st.warning("Scoring weights must total exactly 100%.")
 
-if st.button("Screen Resumes"):
+if st.button(
+    "Screen Resumes",
+    type="primary",
+    use_container_width=True
+):
     if not job_description:
         st.error("Please enter a job description.")
     elif not uploaded_files:
