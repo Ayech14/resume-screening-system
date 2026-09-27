@@ -89,6 +89,10 @@ uploaded_files = st.file_uploader(
 )
 st.subheader("Scoring Configuration")
 
+st.caption(
+    "Adjust how much each category contributes to the overall candidate score."
+)
+
 col1, col2 = st.columns(2)
 
 with col1:
