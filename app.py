@@ -239,6 +239,10 @@ if st.button(
 
         st.subheader("Screening Summary")
 
+        st.caption(
+            "Overview of the candidates screened against the current job description."
+        )
+
         total_candidates = len(results)
         average_score = sum(
             candidate["score"] for candidate in results
