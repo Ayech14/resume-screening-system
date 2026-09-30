@@ -374,6 +374,13 @@ if st.button(
                         """,
                         unsafe_allow_html=True
                     )
+                st.divider()
+
+                st.subheader("Export Results")
+
+                st.caption(
+                    "Download the screening results for further review or record keeping."
+                )
                 csv_buffer = StringIO()
 
         writer = csv.writer(csv_buffer)
