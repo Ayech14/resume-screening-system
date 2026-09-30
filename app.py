@@ -278,6 +278,10 @@ if st.button(
 
         st.subheader("Candidate Rankings")
 
+        st.caption(
+            "Candidates are ranked by their overall match score."
+        )
+
         for rank, candidate in enumerate(results, start=1):
 
             required_matched = len(candidate["matched_required"])
