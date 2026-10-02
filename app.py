@@ -295,8 +295,26 @@ if st.button(
                 st.write(f"**Candidate:** {candidate['name']}")
                 st.write(f"**Email:** {candidate['email']}")
                 st.write(f"**Phone:** {candidate['phone']}")
-                st.write(
-                    f"**Recommendation:** {candidate['recommendation']}"
+                st.write("**Recommendation**")
+
+                st.markdown(
+                    f"""
+                    <span style="
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 6px 12px;
+                        border-radius: 999px;
+                        background-color: #1f2430;
+                        border: 1px solid #3a4152;
+                        color: #e6e6eb;
+                        font-size: 14px;
+                        font-weight: 500;
+                        white-space: nowrap;
+                    ">
+                        {candidate['recommendation']}
+                    </span>
+                    """,
+                    unsafe_allow_html=True
                 )
                 col1, col2, col3 = st.columns(3)
 
