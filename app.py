@@ -153,19 +153,20 @@ if st.button(
     elif total_weight != 100:
         st.error("Scoring weights must total exactly 100%.")
     else:
-        parser = ResumeParser()
-        extractor = KeywordExtractor("data/skills_taxonomy.json")
-        jd_parser = JDParser("data/skills_taxonomy.json")
-        scorer = Scorer(
-        required_weight=required_weight / 100,
-        preferred_weight=preferred_weight / 100,
-        experience_weight=experience_weight / 100,
-        keyword_weight=keyword_weight / 100
-        )
+        with st.spinner("Screening resumes and analyzing candidates..."):
+            parser = ResumeParser()
+            extractor = KeywordExtractor("data/skills_taxonomy.json")
+            jd_parser = JDParser("data/skills_taxonomy.json")
+            scorer = Scorer(
+            required_weight=required_weight / 100,
+            preferred_weight=preferred_weight / 100,
+            experience_weight=experience_weight / 100,
+            keyword_weight=keyword_weight / 100
+            )
 
-        jd_data = jd_parser.parse(job_description)
+            jd_data = jd_parser.parse(job_description)
 
-        results = []
+            results = []
 
         for uploaded_file in uploaded_files:
             with tempfile.NamedTemporaryFile(
