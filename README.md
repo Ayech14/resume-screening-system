@@ -4,7 +4,9 @@ A Python-based resume screening and candidate ranking system that helps recruite
 
 ## 🚀 Live Demo
 
-**Coming soon — deployed with Streamlit Community Cloud**
+Try the live application here:
+
+👉 https://resume-screening-system-ayech14.streamlit.app/
 
 ## 📌 Overview
 
