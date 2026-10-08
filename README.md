@@ -192,11 +192,4 @@ Potential future improvements include:
 
 This project is intended as an educational and portfolio project. Screening results should be treated as decision-support information rather than an automated replacement for human hiring decisions.
 
-## 👨‍💻 Author
 
-**Iman Hashemi**
-
-Computer Science Student
-York University — Lassonde School of Engineering
-
-[GitHub](https://github.com/Ayech14)
